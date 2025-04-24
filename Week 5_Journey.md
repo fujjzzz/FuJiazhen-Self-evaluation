@@ -1,5 +1,5 @@
 本周阅读**Database-System-Concepts-7th-Edition**:PART TWO DATABASE DESIGN,知识点总结如下：  
-**Chapter 6 Database Design Using the E-R Model**  
+**Chapter 6 Database Design Using the E-R Model**  （p241-p300）  
   
 **一、统一建模语言（UML）**  
 1. 概述  
