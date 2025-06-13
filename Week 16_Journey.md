@@ -475,8 +475,7 @@ graph TD
 课后习题选做
 
 
-## 17.12 List the ACID properties. Explain the usefulness of each.  
-### 解析与答案  
+## 17.12 List the ACID properties. Explain the usefulness of each.    
 ACID 是事务的四大核心特性，作用如下：  
 
 | 特性          | 定义与作用                                                                 |  
@@ -488,7 +487,6 @@ ACID 是事务的四大核心特性，作用如下：
 
 
 ## 17.13 Transaction States & Transitions  
-### 解析与答案  
 事务执行过程的状态及转移如下：  
 
 1. **活动状态（Active）**：事务开始执行，执行读写操作。  
@@ -502,8 +500,7 @@ ACID 是事务的四大核心特性，作用如下：
 - 执行失败：`Active → Failed → Aborted`（回滚后可重试：`Aborted → Active` ）  
 
 
-## 17.14 Serial Schedule vs. Serializable Schedule  
-### 解析与答案  
+## 17.14 Serial Schedule vs. Serializable Schedule   
 | 概念                  | 定义                                                                 |  
 |-----------------------|----------------------------------------------------------------------|  
 | **Serial Schedule**   | 事务**完全串行执行**（一个事务结束后，另一个才开始），天然保障一致性。                |  
@@ -514,8 +511,7 @@ ACID 是事务的四大核心特性，作用如下：
 - 可串行化调度：`T1` 和 `T2` 交叉执行，但效果与 `T1→T2` 或 `T2→T1` 的串行调度一致。  
 
 
-## 17.15 Two Transactions: Consistency & Serializability  
-### 题目回顾  
+## 17.15 Two Transactions: Consistency & Serializability    
 事务定义：  
 ```plaintext
 T₁₃: read(A); read(B); if A=0 then B:=B+1; write(B).  
@@ -524,8 +520,7 @@ T₁₄: read(B); read(A); if B=0 then A:=A+1; write(A).
 初始状态：`A=0, B=0`，一致性要求：`A=0 ∨ B=0`。  
 
 
-#### a. Show that every serial execution preserves consistency.  
-**解析与答案**：  
+#### a. Show that every serial execution preserves consistency.    
 串行执行有两种顺序：`T₁₃→T₁₄` 或 `T₁₄→T₁₃`，需验证两种情况均满足 `A=0 ∨ B=0`。  
 
 - **顺序 1：T₁₃ → T₁₄**  
@@ -544,8 +539,7 @@ T₁₄: read(B); read(A); if B=0 then A:=A+1; write(A).
   3. 验证一致性：`A=0 ∨ B=0` → `1∨0=1`（满足 ）。  
 
 
-#### b. Show a concurrent execution producing a nonserializable schedule.  
-**解析与答案**：  
+#### b. Show a concurrent execution producing a nonserializable schedule.   
 构造交叉执行的调度，使其不满足冲突可串行化（前驱图存在环 ）。  
 
 **调度示例**：  
@@ -565,8 +559,7 @@ T₁₄: write(A) → A=1
 - 前驱图存在环（`T₁₃↔T₁₄` ），故为**非可串行化调度**。  
 
 
-#### c. Is there a concurrent execution producing a serializable schedule?  
-**解析与答案**：  
+#### c. Is there a concurrent execution producing a serializable schedule?    
 是的。构造冲突等价于串行调度的并发执行（前驱图无环 ）。  
 
 **调度示例（等价于 T₁₃→T₁₄ ）**：  
@@ -584,8 +577,7 @@ T₁₄: write(A) → 无操作（因 B≠0 ）
 - 仅存在 `T₁₃→T₁₄` 的边（因 `T₁₃` 的写操作先于 `T₁₄` 的读操作 ），无环 → **可串行化调度**。  
 
 
-## 17.16 Serializable Schedule with Different Commit Order  
-### 解析与答案  
+## 17.16 Serializable Schedule with Different Commit Order   
 **需求**：构造两个事务的可串行化调度，且**提交顺序与串行化顺序不同**。  
 
 **示例**：  
@@ -605,7 +597,6 @@ T₁: commit     → T₁ 提交
 
 
 ## 17.17 Recoverable Schedules  
-### 解析与答案  
 #### Q1: What is a recoverable schedule?  
 **定义**：若事务 `T_j` 读取了 `T_i` 写入的数据，则 `T_i` 的提交操作必须在 `T_j` 的提交操作**之前**。避免 `T_i` 回滚后，`T_j` 已提交无法回滚的问题。  
 
@@ -618,8 +609,7 @@ T₁: commit     → T₁ 提交
 **特殊场景**：某些短期事务/只读事务，或通过额外日志/补偿机制保证最终一致性时，可放宽 recoverable 要求以提升并发。但需严格评估数据一致性风险。  
 
 
-## 17.18 Why Support Concurrent Execution?  
-### 解析与答案  
+## 17.18 Why Support Concurrent Execution?   
 数据库支持事务并发执行的核心原因：  
 
 1. **提升吞吐量**：多个事务同时执行，充分利用 CPU、磁盘等资源，减少整体执行时间。  
@@ -629,8 +619,7 @@ T₁: commit     → T₁ 提交
 尽管需额外实现并发控制（如锁、时间戳 ）保障一致性，但性能收益远大于实现成本。  
 
 
-## 17.19 Read-Committed Isolation & Cascadeless  
-### 解析与答案  
+## 17.19 Read-Committed Isolation & Cascadeless   
 **读已提交（Read-Committed）隔离级别**：事务仅能读取已提交的数据。  
 
 **为何无级联回滚（Cascadeless）**：  
@@ -685,8 +674,7 @@ T₂: commit
 **说明**：调度满足 Repeatable Read（数据项 `X` 未被更新 ），但因幻读导致非可串行化（效果与串行执行不同 ）。  
 
 
-## 17.21 Pred_Read & Phantom Phenomenon  
-### 题目回顾  
+## 17.21 Pred_Read & Phantom Phenomenon    
 新增操作 `pred_read(r, P)`：读取关系 `r` 中满足谓词 `P` 的所有元组。需构造涉及此操作的调度，分析幻读与可串行化。  
 
 
